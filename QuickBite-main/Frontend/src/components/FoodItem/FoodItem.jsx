@@ -7,10 +7,44 @@ import './fooditem.css'
 const FoodItem = ({ id, name, price, description, image, category, rating, deliveryTime, isVeg, offer, index }) => {
   const { cartItem, addToCart, removeFromCart, URl, toggleWishlist, isWishlisted, token } = useContext(StoreContext)
 
-  const defaultImage = localFoodList[index % localFoodList.length]?.image
+  // Deterministic fallback image based on name and category to prevent shuffling on search/filters
+  const getFallbackImage = () => {
+    // 1. Try exact name match
+    const byName = localFoodList.find(
+      (l) => l.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+    if (byName) return byName.image;
+
+    // 2. Try normalized category match
+    const getCategoryFallback = (cat) => {
+      const c = (cat || "").toLowerCase().trim();
+      if (c.includes("salad")) return "salad";
+      if (c.includes("roll") || c.includes("starter")) return "rolls";
+      if (c.includes("dessert") || c.includes("desert") || c.includes("cake") || c.includes("beverage") || c.includes("shake") || c.includes("coffee") || c.includes("tea")) return "dessert";
+      if (c.includes("sandwich") || c.includes("bread") || c.includes("snack")) return "sandwich";
+      if (c.includes("cake")) return "cake";
+      if (c.includes("veg") || c.includes("course") || c.includes("indian") || c.includes("food")) return "pure veg";
+      if (c.includes("pasta")) return "pasta";
+      if (c.includes("noodle") || c.includes("chinese")) return "noodles";
+      return "";
+    };
+
+    const targetCat = getCategoryFallback(category);
+    if (targetCat) {
+      const byCategory = localFoodList.find(
+        (l) => l.category.toLowerCase().trim() === targetCat
+      );
+      if (byCategory) return byCategory.image;
+    }
+
+    // 3. Absolute fallback
+    return assets.fallback_food || (localFoodList.length > 0 ? localFoodList[0].image : "");
+  };
+
+  const defaultImage = getFallbackImage();
   const imageUrl = image && (image.startsWith('http') || image.startsWith('/'))
     ? image
-    : image ? URl + "/images/" + image : defaultImage
+    : image ? URl + "/images/" + image : defaultImage;
 
   const wishlisted = isWishlisted(id)
 
