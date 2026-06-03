@@ -66,6 +66,11 @@ const PlaceOrder = () => {
   const placeOrder = async (e) => {
     e.preventDefault();
 
+    if (!window.Razorpay) {
+      toast.error("Razorpay payment assistant is still loading. Please try again in a few seconds.");
+      return;
+    }
+
     // Build order items from cart
     const orderItems = food_list
       .filter((item) => cartItem[item._id] > 0)
