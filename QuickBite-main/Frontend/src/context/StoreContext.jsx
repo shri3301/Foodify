@@ -13,10 +13,10 @@ const StoreContextProvider = ({ children }) => {
 
   // ─── State ───────────────────────────────────────────────────────────────────
   const [cartItem, setCartItems] = useState({});
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "dark");
   const [searchQuery, setSearchQuery] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [discountAmount, setDiscountAmount] = useState(0);

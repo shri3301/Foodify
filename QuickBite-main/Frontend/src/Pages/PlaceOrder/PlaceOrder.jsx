@@ -39,7 +39,8 @@ const PlaceOrder = () => {
 
   // Guard: redirect to cart if not logged in
   useEffect(() => {
-    if (!token) {
+    const savedToken = localStorage.getItem("token");
+    if (!token && !savedToken) {
       navigate("/cart");
     }
   }, [token, navigate]);
