@@ -17,6 +17,7 @@ const PlaceOrder = () => {
     applyCoupon,
     setCouponCode,
     setDiscountAmount,
+    setShowLogin,
   } = useContext(StoreContext);
 
   const navigate = useNavigate();
@@ -37,13 +38,6 @@ const PlaceOrder = () => {
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponError, setCouponError] = useState("");
 
-  // Guard: redirect to cart if not logged in
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    if (!token && !savedToken) {
-      navigate("/cart");
-    }
-  }, [token, navigate]);
 
   // Dynamically load Razorpay SDK
   useEffect(() => {
@@ -172,6 +166,17 @@ const PlaceOrder = () => {
   const total = subtotal + delivery - discountAmount;
 
   const cartItems = food_list.filter((item) => cartItem[item._id] > 0);
+
+  const savedToken = localStorage.getItem("token");
+  if (!token && !savedToken) {
+    return (
+      <div className="placeorder-page" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', gap: '20px', textAlign: 'center', padding: '20px' }}>
+        <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '24px', fontWeight: 700, color: 'var(--text)' }}>Please Sign In</h2>
+        <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>You need to be logged in to place an order.</p>
+        <button onClick={() => setShowLogin(true)} className="btn-primary" style={{ padding: '12px 30px', borderRadius: '50px', fontWeight: 700 }}>Sign In / Sign Up</button>
+      </div>
+    );
+  }
 
   if (!food_list || food_list.length === 0) {
     return (

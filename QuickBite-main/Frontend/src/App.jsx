@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Home from './Pages/Home/Home'
@@ -14,9 +14,10 @@ import Wishlist from './Pages/Wishlist/Wishlist'
 import Profile from './Pages/Profile/Profile'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { StoreContext } from './context/StoreContext'
 
 const App = () => {
-  const [showLogin, setShowLogin] = useState(false)
+  const { showLogin, setShowLogin } = useContext(StoreContext);
   return (
     <>
       <ToastContainer position="top-right" autoClose={2500} hideProgressBar={false} newestOnTop closeOnClick pauseOnHover theme="colored" />

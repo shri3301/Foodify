@@ -20,6 +20,7 @@ const StoreContextProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [discountAmount, setDiscountAmount] = useState(0);
+  const [showLogin, setShowLogin] = useState(false);
 
   // ─── Cart Functions ───────────────────────────────────────────────────────────
   const addToCart = async (itemId) => {
@@ -239,6 +240,8 @@ const StoreContextProvider = ({ children }) => {
     discountAmount,
     setDiscountAmount,
     applyCoupon,
+    showLogin,
+    setShowLogin,
   };
 
   return (
